@@ -22,7 +22,7 @@ class FNYStatusBar: NSStatusBar {
         
         let statusItemIcon: NSImage? = NSImage(named: "status-item-icon-default.png")
         statusItemIcon?.isTemplate = true
-        statusItem?.image = statusItemIcon
+        statusItem?.button?.image = statusItemIcon
         
         statusItem?.menu = menu
     }
@@ -30,8 +30,8 @@ class FNYStatusBar: NSStatusBar {
     // MARK: - Update
     func updateStatusItem(image: NSImage?, title: String?) {
         image?.isTemplate = true
-        statusItem?.image = image
-        statusItem?.title = title
+        statusItem?.button?.image = image
+        statusItem?.button?.title = title ?? ""
     }
     
     func updateStatusItem(toolTip: String?) {

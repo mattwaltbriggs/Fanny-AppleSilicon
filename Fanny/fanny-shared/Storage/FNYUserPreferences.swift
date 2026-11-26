@@ -38,11 +38,13 @@ class FNYUserPreferences {
     }()
 
     static let cpuSensorOptions: [CPUSensorOption] = {
-        return [defaultCPUSensorOption] + Sensor.CPU.allCases.map({ ($0.index + 1, $0.title, $0.key) })
+        let keys: [String] = FNYSystemSensors.shared.availableTemperatureKeys(for: .cpu)
+        return [defaultCPUSensorOption] + keys.enumerated().map({ ($0.offset + 1, $0.element, $0.element) })
     }()
 
     static let gpuSensorOptions: [GPUSensorOption] = {
-        return [defaultGPUSensorOption] + Sensor.GPU.allCases.map({ ($0.index + 1, $0.title, $0.key) })
+        let keys: [String] = FNYSystemSensors.shared.availableTemperatureKeys(for: .gpu)
+        return [defaultGPUSensorOption] + keys.enumerated().map({ ($0.offset + 1, $0.element, $0.element) })
     }()
     
     private static let defaultMonitorRefreshTimeIntervalOption: MonitorRefreshTimeIntervalOption = (0, "3 seconds", 3.0)
@@ -51,7 +53,7 @@ class FNYUserPreferences {
     private static let defaultCPUSensorOption: CPUSensorOption = (0, "Average", nil)
     private static let defaultGPUSensorOption: GPUSensorOption = (0, "Average", nil)
 
-    private static let sharedDefaultsSuiteName: String = "fanny-shared-defaults"
+    private static let sharedDefaultsSuiteName: String = "group.com.fannywidget.shared"
     private static let sharedDefaults: UserDefaults = UserDefaults(suiteName: FNYUserPreferences.sharedDefaultsSuiteName)!
     
     // MARK: - Refresh Interval

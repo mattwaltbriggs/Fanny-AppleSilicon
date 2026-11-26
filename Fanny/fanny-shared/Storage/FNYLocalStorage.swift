@@ -10,7 +10,7 @@ import Foundation
 
 class FNYLocalStorage {
     
-    private static let sharedDefaultsSuiteName: String = "fanny-shared-defaults"
+    private static let sharedDefaultsSuiteName: String = "group.com.fannywidget.shared"
     private static let sharedDefaults: UserDefaults = UserDefaults(suiteName: FNYLocalStorage.sharedDefaultsSuiteName)!
     
     // MARK: - Fans
@@ -38,7 +38,7 @@ class FNYLocalStorage {
     }
     
     static func numberOfFans() -> Int? {
-        return sharedDefaults.integer(forKey: FNYStorageKey.numberOfFans.stringValue)
+        return sharedDefaults.object(forKey: FNYStorageKey.numberOfFans.stringValue) as? Int
     }
     
     // MARK: - CPU

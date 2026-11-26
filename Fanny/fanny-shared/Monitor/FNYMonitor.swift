@@ -59,33 +59,19 @@ class FNYMonitor {
     }
     
     @objc private func refresh() {
-        #if APP_EXTENSION
-            //
-        #else
-            let fans: [Fan] = SMC.shared.fans()
+        let sensors: FNYSystemSensors = FNYSystemSensors.shared
         
-            var cpuTemperature: Temperature?
-            if
-                let cpuSensorOptionKey: SensorKey = FNYUserPreferences.cpuSensorOption().key,
-                let cpuSensor: Sensor.CPU = Sensor.CPU(key: cpuSensorOptionKey) {
-                cpuTemperature = SMC.shared.cpuTemperature(sensor: cpuSensor)
-            }
-            else {
-                cpuTemperature = SMC.shared.cpuTemperatureAverage()
-            }
-            
-            var gpuTemperature: Temperature?
-            if
-                let gpuSensorOptionKey: SensorKey = FNYUserPreferences.gpuSensorOption().key,
-                let gpuSensor: Sensor.GPU = Sensor.GPU(key: gpuSensorOptionKey) {
-                gpuTemperature = SMC.shared.gpuTemperature(sensor: gpuSensor)
-            }
-            else {
-                gpuTemperature = SMC.shared.gpuTemperatureAverage()
-            }
+        let fans: [Fan] = sensors.fans()
+        let cpuTemperature: Temperature? = sensors.cpuTemperature(
+            key: FNYUserPreferences.cpuSensorOption().key
+        )
+        let gpuTemperature: Temperature? = sensors.gpuTemperature(
+            key: FNYUserPreferences.gpuSensorOption().key
+        )
         
-            updateLocalStorageSystemStats((fans: fans, cpuTemperature: cpuTemperature, gpuTemperature: gpuTemperature))
-        #endif
+        updateLocalStorageSystemStats((fans: fans,
+                                       cpuTemperature: cpuTemperature,
+                                       gpuTemperature: gpuTemperature))
         
         delegate.invoke({ $0.monitorDidRefreshSystemStats(self) })
     }
